@@ -1,7 +1,7 @@
 import React from 'react';
-import OnboardingLogo from '../assets/images/onboarding-logo.svg';
-import {View, Text, SafeAreaView} from '../styled';
-import AuthButton from '../components/AuthButton';
+import OnboardingLogo from 'assets/images/onboarding-logo.svg';
+import {View, Text, SafeAreaView} from 'react-native-styled';
+import AuthButton from 'components/AuthButton';
 
 const Onboarding = () => {
   return (
