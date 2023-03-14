@@ -1,13 +1,19 @@
 import React from 'react';
-import {View, Text, SafeAreaView} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import MainStack from './src/navigations/MainStack';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import theme from './src/styled/theme';
+import {ThemeProvider} from 'styled-components/native';
 
 const App = () => {
   return (
-    <SafeAreaView>
-      <View>
-        <Text>leeway</Text>
-      </View>
-    </SafeAreaView>
+    <ThemeProvider theme={theme}>
+      <SafeAreaProvider>
+        <NavigationContainer>
+          <MainStack />
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </ThemeProvider>
   );
 };
 
