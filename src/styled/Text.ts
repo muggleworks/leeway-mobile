@@ -1,3 +1,4 @@
+import {Platform} from 'react-native';
 import styled from 'styled-components/native';
 import {
   color,
@@ -42,6 +43,11 @@ const Text = styled.Text<
     border,
     position,
   )};
+  font-family: ${props =>
+    (props.fontWeight === 'bold' && 'Rubik-Bold') ||
+    (props.fontWeight === 'medium' && 'Rubik-Medium') ||
+    'Rubik-Regular'};
+  ${Platform.OS === 'android' && 'font-weight: normal'};
 `;
 
 export default Text;
