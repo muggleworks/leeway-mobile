@@ -1,4 +1,4 @@
-package com.leeway;
+package xyz.zympl.leeway;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
