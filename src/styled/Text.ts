@@ -45,7 +45,7 @@ const Text = styled.Text<
   )};
   font-family: ${props =>
     (props.fontWeight === 'bold' && 'Rubik-Bold') ||
-    (props.fontWeight === 'medium' && 'Rubik-Medium') ||
+    (props.fontWeight === '500' && 'Rubik-Medium') ||
     'Rubik-Regular'};
   ${Platform.OS === 'android' && 'font-weight: normal'};
 `;
