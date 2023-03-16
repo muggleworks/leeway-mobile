@@ -1,6 +1,4 @@
-import {SafeAreaView} from 'react-native-safe-area-context';
 import styled from 'styled-components/native';
-
 import {
   color,
   ColorProps,
@@ -19,7 +17,9 @@ import {
   compose,
 } from 'styled-system';
 
-const View = styled(SafeAreaView)<
+const TouchableOpacity = styled.TouchableOpacity.attrs(props => ({
+  activeOpacity: props.activeOpacity || 0.8,
+}))<
   ColorProps &
     SpaceProps &
     LayoutProps &
@@ -34,4 +34,4 @@ const View = styled(SafeAreaView)<
   ${compose(color, space, layout, flexbox, background, border, position)};
 `;
 
-export default View;
+export default TouchableOpacity;

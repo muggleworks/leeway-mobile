@@ -1,7 +1,5 @@
-import {Theme} from 'styled-system';
-
-const theme: Theme = {
-  space: {},
+import {DefaultTheme} from 'styled-components';
+const theme: DefaultTheme = {
   fontSizes: {
     xl: 40,
     h1: 24,
@@ -20,9 +18,6 @@ const theme: Theme = {
     border: '#EC736399',
     borderActive: '#EA6290',
   },
-  fonts: {},
-  lineHeights: {},
-  sizes: {},
   borderWidths: {
     normal: 1,
   },
