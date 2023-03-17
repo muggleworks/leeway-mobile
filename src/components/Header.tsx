@@ -3,10 +3,11 @@ import React from 'react';
 import Svg, {Defs, LinearGradient, Stop, Text} from 'react-native-svg';
 import IconButton from './IconButton';
 import {useTheme} from 'styled-components/native';
+import {IconName} from 'assets/icons';
 
 function GradientText({text}: {text: string}) {
   return (
-    <Svg width="100%" height={30} fill="none">
+    <Svg width="100%" height={24} fill="none">
       <Text
         fill="url(#textColor)"
         fontSize="24"
@@ -28,20 +29,39 @@ function GradientText({text}: {text: string}) {
 
 interface Props {
   title: string;
+  right?: {iconName: IconName; actionHandler: () => void};
+  left?: {iconName: IconName; actionHandler: () => void};
 }
 
-export default function Header({title}: Props) {
+export default function Header({title, right, left}: Props) {
   const theme = useTheme();
   return (
-    <View paddingX={24} paddingTop={24} flexDirection="row" alignItems="center">
+    <View
+      paddingX={left ? 16 : 24}
+      marginTop={16}
+      flexDirection="row"
+      alignItems="center">
+      {left && (
+        <View mr={12}>
+          <IconButton
+            name={left.iconName}
+            color={theme.colors.textSecondary}
+            onPress={left.actionHandler}
+          />
+        </View>
+      )}
       <View flex={1}>
         <GradientText text={title} />
       </View>
-      <IconButton
-        name="settings"
-        color={theme.colors.textSecondary}
-        onPress={() => console.log('Settings')}
-      />
+      {right && (
+        <View ml={12}>
+          <IconButton
+            name={right.iconName}
+            color={theme.colors.textSecondary}
+            onPress={right.actionHandler}
+          />
+        </View>
+      )}
     </View>
   );
 }
