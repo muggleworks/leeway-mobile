@@ -2,8 +2,16 @@ import React from 'react';
 import OnboardingLogo from 'assets/images/onboarding-logo.svg';
 import {View, Text, SafeAreaView} from 'react-native-styled';
 import AuthButton from 'components/AuthButton';
+import {useNavigation} from '@react-navigation/native';
+import {screens} from 'screens/index';
 
 const Onboarding = () => {
+  const navigation = useNavigation();
+
+  const handleAuth = () => {
+    navigation.navigate(screens.Home);
+  };
+
   return (
     <SafeAreaView flex={1} bg="white">
       <View
@@ -17,11 +25,8 @@ const Onboarding = () => {
             continue with
           </Text>
           <View flexDirection="row" gap={28} marginTop={16}>
-            <AuthButton provider="apple" onPress={() => console.log('Apple')} />
-            <AuthButton
-              provider="google"
-              onPress={() => console.log('Google')}
-            />
+            <AuthButton provider="apple" onPress={handleAuth} />
+            <AuthButton provider="google" onPress={handleAuth} />
           </View>
         </View>
       </View>

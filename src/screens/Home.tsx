@@ -6,6 +6,8 @@ import {FlashList} from '@shopify/flash-list';
 import Transaction from 'components/Transaction';
 import {useTheme} from 'styled-components/native';
 import Header from 'components/Header';
+import {useNavigation} from '@react-navigation/native';
+import {screens} from 'screens/index';
 
 const tempData = [
   {
@@ -96,6 +98,15 @@ const tempData = [
 
 const Home = () => {
   const theme = useTheme();
+  const navigation = useNavigation();
+
+  const openSettings = () => {
+    navigation.navigate(screens.Settings);
+  };
+
+  const openTransaction = () => {
+    navigation.navigate(screens.Transaction);
+  };
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']} bg="white" flex={1}>
@@ -103,7 +114,7 @@ const Home = () => {
         title="leeway"
         right={{
           iconName: 'settings',
-          actionHandler: () => console.log('Settings pressed'),
+          actionHandler: openSettings,
         }}
       />
       <View
@@ -144,10 +155,7 @@ const Home = () => {
           }}
           estimatedItemSize={65}
           renderItem={({item}) => (
-            <Transaction
-              item={item}
-              onPress={() => console.log('Transaction Pressed')}
-            />
+            <Transaction item={item} onPress={openTransaction} />
           )}
         />
       </View>
@@ -158,10 +166,7 @@ const Home = () => {
         left="50%"
         style={{transform: [{translateX: -28}]}}
         alignItems="center">
-        <FloatingActionButton
-          onPress={() => console.log('Add Button')}
-          icon="plus"
-        />
+        <FloatingActionButton onPress={openTransaction} icon="plus" />
       </View>
     </SafeAreaView>
   );

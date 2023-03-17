@@ -3,15 +3,18 @@ import React from 'react';
 import Header from 'components/Header';
 import Input from 'components/Input';
 import FloatingActionButton from 'components/FloatingActionButton';
+import {useNavigation} from '@react-navigation/native';
 
 export default function Transaction() {
+  const {goBack} = useNavigation();
+
   return (
     <SafeAreaView flex={1} position="relative">
       <Header
         title="fuel expense"
         left={{
           iconName: 'left',
-          actionHandler: () => console.log('Back pressed'),
+          actionHandler: goBack,
         }}
       />
       <View px={24} pt={32} gap={20}>

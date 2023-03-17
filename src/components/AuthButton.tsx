@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {TouchableHighlight} from 'react-native-styled';
 import AppleLogo from 'assets/icons/apple.svg';
 import GoogleLogo from 'assets/icons/google.svg';
-import {useTheme} from 'react-native-styled';
+import {useTheme} from 'styled-components/native';
 
 interface Props {
   provider: 'google' | 'apple';
