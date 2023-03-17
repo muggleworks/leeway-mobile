@@ -4,6 +4,7 @@ import Onboarding from 'screens/Onboarding';
 import Home from 'screens/Home';
 import Transaction from 'screens/Transaction';
 import Settings from 'screens/Settings';
+import {screens} from 'screens/index';
 
 const Stack = createNativeStackNavigator();
 
@@ -11,11 +12,11 @@ const MainStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{headerShown: false}}
-      initialRouteName="Settings">
-      <Stack.Screen name="Onboarding" component={Onboarding} />
-      <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen name="Transaction" component={Transaction} />
-      <Stack.Screen name="Settings" component={Settings} />
+      initialRouteName={screens.Onboarding}>
+      <Stack.Screen name={screens.Onboarding} component={Onboarding} />
+      <Stack.Screen name={screens.Home} component={Home} />
+      <Stack.Screen name={screens.Transaction} component={Transaction} />
+      <Stack.Screen name={screens.Settings} component={Settings} />
     </Stack.Navigator>
   );
 };
