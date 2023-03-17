@@ -99,7 +99,13 @@ const Home = () => {
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']} bg="white" flex={1}>
-      <Header title="leeway" />
+      <Header
+        title="leeway"
+        right={{
+          iconName: 'settings',
+          actionHandler: () => console.log('Settings pressed'),
+        }}
+      />
       <View
         zIndex={1}
         paddingX={24}
