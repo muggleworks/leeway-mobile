@@ -2,14 +2,19 @@ import React from 'react';
 import OnboardingLogo from 'assets/images/onboarding-logo.svg';
 import {View, Text, SafeAreaView} from 'react-native-styled';
 import AuthButton from 'components/AuthButton';
-import {useNavigation} from '@react-navigation/native';
-import {screens} from 'screens/index';
+import auth from '@react-native-firebase/auth';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 const Onboarding = () => {
-  const navigation = useNavigation();
-
-  const handleAuth = () => {
-    navigation.navigate(screens.Home);
+  const handleAuth = async () => {
+    try {
+      await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
+      const {idToken} = await GoogleSignin.signIn();
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+      return auth().signInWithCredential(googleCredential);
+    } catch (error) {
+      console.log('Not signed in!', error);
+    }
   };
 
   return (
