@@ -21,8 +21,17 @@ const Home = () => {
   };
 
   const openTransaction = (transaction?: TransactionType) => {
-    console.log(transaction);
-    navigation.navigate(screens.Transaction);
+    navigation.navigate(
+      screens.Transaction,
+      transaction
+        ? {
+            transaction: {
+              ...transaction,
+              createdAt: transaction?.createdAt.toDateString(),
+            },
+          }
+        : {},
+    );
   };
 
   useEffect(() => {
@@ -107,7 +116,7 @@ const Home = () => {
         left="50%"
         style={{transform: [{translateX: -28}]}}
         alignItems="center">
-        <FloatingActionButton onPress={openTransaction} icon="plus" />
+        <FloatingActionButton onPress={() => openTransaction()} icon="plus" />
       </View>
     </SafeAreaView>
   );
