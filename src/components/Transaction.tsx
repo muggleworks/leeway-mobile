@@ -2,7 +2,21 @@ import {View, Text, TouchableHighlight} from 'react-native-styled';
 import React, {useState} from 'react';
 import {useTheme} from 'styled-components/native';
 
-export default function Transaction({item, onPress}) {
+export type TransactionType = {
+  key: string;
+  currentKm: number;
+  amount: number;
+  unitPrice: number;
+  quantity: number;
+  createdAt: Date;
+};
+
+type Props = {
+  item: TransactionType;
+  onPress: (transaction: TransactionType) => void;
+};
+
+export default function Transaction({item, onPress}: Props) {
   const [isActive, setIsActive] = useState(false);
   const theme = useTheme();
 
@@ -12,7 +26,7 @@ export default function Transaction({item, onPress}) {
       borderWidth="normal"
       borderRadius="s"
       paddingX={16}
-      onPress={onPress}
+      onPress={() => onPress(item)}
       underlayColor={theme.colors.bgActive}
       borderColor={isActive ? 'borderActive' : 'border'}
       onPressIn={() => setIsActive(true)}
@@ -22,8 +36,7 @@ export default function Transaction({item, onPress}) {
         <View
           flexDirection="row"
           justifyContent="space-between"
-          alignItems="flex-start"
-          paddingBottom={2}>
+          alignItems="flex-start">
           <Text fontWeight="bold" color="text" fontSize="h2">
             {item.amount}₹
           </Text>
@@ -39,7 +52,7 @@ export default function Transaction({item, onPress}) {
             {item.quantity} l
           </Text>
           <Text color="textSecondary" fontSize="p2">
-            {item.date.toString()}({item.totalDistanceCovered}km)
+            {item.createdAt.toDateString()}({item.currentKm}km)
           </Text>
         </View>
       </View>
