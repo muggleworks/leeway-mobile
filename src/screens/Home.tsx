@@ -1,112 +1,52 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {SafeAreaView, Text, View, LinearGradient} from 'react-native-styled';
 import FloatingActionButton from 'components/FloatingActionButton';
 import DataCard from 'components/DataCard';
 import {FlashList} from '@shopify/flash-list';
-import Transaction from 'components/Transaction';
+import Transaction, {TransactionType} from 'components/Transaction';
 import {useTheme} from 'styled-components/native';
 import Header from 'components/Header';
 import {useNavigation} from '@react-navigation/native';
 import {screens} from 'screens/index';
-
-const tempData = [
-  {
-    amount: 500,
-    quantity: 4.3,
-    unitPrice: 104.3,
-    date: new Date(),
-    totalDistanceCovered: 41232,
-  },
-  {
-    amount: 500,
-    quantity: 4.3,
-    unitPrice: 104.3,
-    date: new Date(),
-    totalDistanceCovered: 41232,
-  },
-  {
-    amount: 500,
-    quantity: 4.3,
-    unitPrice: 104.3,
-    date: new Date(),
-    totalDistanceCovered: 41232,
-  },
-  {
-    amount: 500,
-    quantity: 4.3,
-    unitPrice: 104.3,
-    date: new Date(),
-    totalDistanceCovered: 41232,
-  },
-  {
-    amount: 500,
-    quantity: 4.3,
-    unitPrice: 104.3,
-    date: new Date(),
-    totalDistanceCovered: 41232,
-  },
-  {
-    amount: 500,
-    quantity: 4.3,
-    unitPrice: 104.3,
-    date: new Date(),
-    totalDistanceCovered: 41232,
-  },
-  {
-    amount: 500,
-    quantity: 4.3,
-    unitPrice: 104.3,
-    date: new Date(),
-    totalDistanceCovered: 41232,
-  },
-  {
-    amount: 500,
-    quantity: 4.3,
-    unitPrice: 104.3,
-    date: new Date(),
-    totalDistanceCovered: 41232,
-  },
-  {
-    amount: 500,
-    quantity: 4.3,
-    unitPrice: 104.3,
-    date: new Date(),
-    totalDistanceCovered: 41232,
-  },
-  {
-    amount: 500,
-    quantity: 4.3,
-    unitPrice: 104.3,
-    date: new Date(),
-    totalDistanceCovered: 41232,
-  },
-  {
-    amount: 500,
-    quantity: 4.3,
-    unitPrice: 104.3,
-    date: new Date(),
-    totalDistanceCovered: 41232,
-  },
-  {
-    amount: 500,
-    quantity: 4.3,
-    unitPrice: 104.3,
-    date: new Date(),
-    totalDistanceCovered: 41232,
-  },
-];
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 const Home = () => {
   const theme = useTheme();
   const navigation = useNavigation();
+  const [transactions, setTransactions] = useState<TransactionType[]>([]);
 
   const openSettings = () => {
     navigation.navigate(screens.Settings);
   };
 
-  const openTransaction = () => {
+  const openTransaction = (transaction?: TransactionType) => {
+    console.log(transaction);
     navigation.navigate(screens.Transaction);
   };
+
+  useEffect(() => {
+    const user = auth().currentUser;
+    const subscriber = firestore()
+      .collection('users')
+      .doc(user?.uid)
+      .collection('transactions')
+      .limit(100)
+      .orderBy('createdAt', 'desc')
+      .onSnapshot(querySnapshot => {
+        const transactionList: TransactionType[] = [];
+        querySnapshot.forEach(documentSnapshot => {
+          transactionList.push({
+            ...documentSnapshot.data(),
+            key: documentSnapshot.id,
+            // @ts-ignore
+            createdAt: documentSnapshot.get('createdAt')?.toDate(),
+          } as TransactionType);
+        });
+        setTransactions(transactionList);
+      });
+    return subscriber;
+  }, []);
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']} bg="white" flex={1}>
@@ -141,7 +81,8 @@ const Home = () => {
           width="100%"
         />
         <FlashList
-          data={tempData}
+          data={transactions}
+          keyExtractor={item => item.key}
           ListHeaderComponent={() => (
             <Text paddingBottom={12} fontSize="p1" color="textSecondary">
               Transactions
