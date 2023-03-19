@@ -3,6 +3,7 @@ import Plus from 'assets/icons/plus.svg';
 import Settings from 'assets/icons/settings.svg';
 import Check from 'assets/icons/check.svg';
 import Left from 'assets/icons/left.svg';
+import Trash from 'assets/icons/trash.svg';
 import {ColorValue} from 'react-native';
 
 const icons = {
@@ -10,6 +11,7 @@ const icons = {
   settings: Settings,
   check: Check,
   left: Left,
+  trash: Trash,
 };
 
 export type IconName = keyof typeof icons;
