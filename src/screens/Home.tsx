@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, Text, View, LinearGradient} from 'react-native-styled';
+import {SafeAreaView, View, LinearGradient} from 'react-native-styled';
 import FloatingActionButton from 'components/FloatingActionButton';
 import DataCard from 'components/DataCard';
-import {FlashList} from '@shopify/flash-list';
-import Transaction, {TransactionType} from 'components/Transaction';
+import {TransactionType} from 'components/Transaction';
 import {useTheme} from 'styled-components/native';
 import Header from 'components/Header';
 import {useNavigation} from '@react-navigation/native';
 import {screens} from 'screens/index';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import TransactionList from 'components/TransactionList';
 
 const Home = () => {
   const theme = useTheme();
@@ -89,24 +89,9 @@ const Home = () => {
           zIndex={2}
           width="100%"
         />
-        <FlashList
-          data={transactions}
-          keyExtractor={item => item.key}
-          ListHeaderComponent={() => (
-            <Text paddingBottom={12} fontSize="p1" color="textSecondary">
-              Transactions
-            </Text>
-          )}
-          ItemSeparatorComponent={() => <View height={8} />}
-          contentContainerStyle={{
-            paddingHorizontal: 24,
-            paddingBottom: 120,
-            paddingTop: 48,
-          }}
-          estimatedItemSize={65}
-          renderItem={({item}) => (
-            <Transaction item={item} onPress={openTransaction} />
-          )}
+        <TransactionList
+          transactions={transactions}
+          openTransaction={openTransaction}
         />
       </View>
 
