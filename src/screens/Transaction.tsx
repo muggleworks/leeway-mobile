@@ -24,6 +24,25 @@ export default function Transaction({navigation, route}) {
     .collection('transactions');
 
   const updateFromData = (value: FormData) => {
+    const valueChanged = Object.keys(value)[0];
+    if (valueChanged === 'amount' && formData?.unitPrice) {
+      value.quantity = (
+        Number(value.amount) / Number(formData.unitPrice)
+      ).toString();
+    }
+
+    if (valueChanged === 'quantity' && formData?.unitPrice) {
+      value.amount = (
+        Number(value.quantity) * Number(formData.unitPrice)
+      ).toString();
+    }
+
+    if (valueChanged === 'unitPrice' && formData?.amount && formData.quantity) {
+      value.quantity = (
+        Number(formData.amount) / Number(value.unitPrice)
+      ).toString();
+    }
+
     setFormData({...formData, ...value});
   };
 
@@ -52,10 +71,10 @@ export default function Transaction({navigation, route}) {
       formData.unitPrice
     ) {
       const data = {
-        currentKm: Number(Number(formData.currentKm).toFixed(2)),
-        amount: Number(Number(formData.amount).toFixed(2)),
-        quantity: Number(Number(formData.quantity).toFixed(2)),
-        unitPrice: Number(Number(formData.unitPrice).toFixed(2)),
+        currentKm: Number(formData.currentKm),
+        unitPrice: Number(formData.unitPrice),
+        amount: Number(formData.amount),
+        quantity: Number(formData.quantity),
         createdAt: new Date(formData.createdAt),
       };
       if (formData.key) {
@@ -94,22 +113,30 @@ export default function Transaction({navigation, route}) {
       />
       <View px={24} pt={32} gap={20}>
         <Input
-          label="current km"
+          label="odometer (km)"
           value={formData?.currentKm}
+          inputMode="decimal"
+          keyboardType="decimal-pad"
           onChangeText={value => updateFromData({currentKm: value})}
         />
         <Input
-          label="unit price"
+          label="unit price (₹)"
+          inputMode="decimal"
           value={formData?.unitPrice}
+          keyboardType="decimal-pad"
           onChangeText={value => updateFromData({unitPrice: value})}
         />
         <Input
-          label="amount"
+          label="purchase amount (₹)"
+          inputMode="decimal"
           value={formData?.amount}
+          keyboardType="decimal-pad"
           onChangeText={value => updateFromData({amount: value})}
         />
         <Input
-          label="quantity"
+          label="quantity (l)"
+          inputMode="decimal"
+          keyboardType="decimal-pad"
           value={formData?.quantity}
           onChangeText={value => updateFromData({quantity: value})}
         />
