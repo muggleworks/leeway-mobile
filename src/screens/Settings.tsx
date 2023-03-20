@@ -1,12 +1,12 @@
-import {Button} from 'react-native';
 import React from 'react';
-import {SafeAreaView, Text} from 'react-native-styled';
+import {SafeAreaView, View} from 'react-native-styled';
 import {useNavigation} from '@react-navigation/native';
-import {screens} from 'screens/index';
 import auth from '@react-native-firebase/auth';
+import Button from 'components/Button';
+import Header from 'components/Header';
 
 export default function Settings() {
-  const {navigate} = useNavigation();
+  const {goBack} = useNavigation();
 
   const signOut = async () => {
     try {
@@ -17,10 +17,17 @@ export default function Settings() {
   };
 
   return (
-    <SafeAreaView gap={24} p={24}>
-      <Text fontSize="h1">Settings</Text>
-      <Button title="go back" onPress={() => navigate(screens.Home)} />
-      <Button title="sign out" onPress={signOut} />
+    <SafeAreaView flex={1}>
+      <Header
+        title="settings"
+        left={{iconName: 'left', actionHandler: goBack}}
+      />
+      <View flex={1} px="24px" py="32px">
+        <View flex={1}></View>
+        <View alignItems="center">
+          <Button label="sign out" onPress={signOut} />
+        </View>
+      </View>
     </SafeAreaView>
   );
 }

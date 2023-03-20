@@ -7,7 +7,7 @@ import {IconName} from 'assets/icons';
 
 function GradientText({text}: {text: string}) {
   return (
-    <Svg width="100%" height={24} fill="none">
+    <Svg width="100%" height={26} fill="none">
       <Text
         fill="url(#textColor)"
         fontSize="24"
