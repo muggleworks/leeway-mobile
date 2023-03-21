@@ -12,10 +12,23 @@ import auth from '@react-native-firebase/auth';
 import TransactionList from 'components/TransactionList';
 import {useWindowDimensions} from 'react-native';
 
+export type DataCardType = {
+  odometerFirstReading: number;
+  odometerLastReading: number;
+  totalQuantity: number;
+  totalAmount: number;
+};
+
 const Home = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const [transactions, setTransactions] = useState<TransactionType[]>([]);
+  const [dataCard, setDataCard] = useState<DataCardType>({
+    odometerFirstReading: 0,
+    odometerLastReading: 0,
+    totalAmount: 0,
+    totalQuantity: 0,
+  });
 
   const {width} = useWindowDimensions();
 
@@ -60,6 +73,38 @@ const Home = () => {
     return subscriber;
   }, []);
 
+  useEffect(() => {
+    const user = auth().currentUser;
+    const subscriber = firestore()
+      .collection('users')
+      .doc(user?.uid)
+      .onSnapshot(snapshot => {
+        const data = snapshot.data();
+        setDataCard(dc => data?.dataCard || dc);
+      });
+    return subscriber;
+  }, []);
+
+  const getKmpl = () => {
+    if (transactions.length < 2) {
+      return;
+    }
+    return (
+      (dataCard.odometerLastReading - dataCard.odometerFirstReading) /
+      dataCard.totalQuantity
+    );
+  };
+
+  const getRspkm = () => {
+    if (transactions.length < 2) {
+      return;
+    }
+    return (
+      dataCard.totalAmount /
+      (dataCard.odometerLastReading - dataCard.odometerFirstReading)
+    );
+  };
+
   return (
     <SafeAreaView edges={['top', 'left', 'right']} bg="white" flex={1}>
       <Header
@@ -77,10 +122,10 @@ const Home = () => {
         flexDirection="row"
         alignItems="center">
         <View zIndex={1}>
-          <DataCard name="millage" suffix="km/l" />
+          <DataCard name="millage" value={getKmpl()} suffix="km/l" />
         </View>
         <View marginLeft={-10}>
-          <DataCard type="secondary" suffix="₹/km" />
+          <DataCard type="secondary" value={getRspkm()} suffix="₹/km" />
         </View>
         {transactions.length < 2 && (
           <View
