@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, View, LinearGradient} from 'react-native-styled';
+import {SafeAreaView, View, LinearGradient, Text} from 'react-native-styled';
 import FloatingActionButton from 'components/FloatingActionButton';
 import DataCard from 'components/DataCard';
 import {TransactionType} from 'components/Transaction';
@@ -10,11 +10,14 @@ import {screens} from 'screens/index';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import TransactionList from 'components/TransactionList';
+import {useWindowDimensions} from 'react-native';
 
 const Home = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const [transactions, setTransactions] = useState<TransactionType[]>([]);
+
+  const {width} = useWindowDimensions();
 
   const openSettings = () => {
     navigation.navigate(screens.Settings);
@@ -74,11 +77,27 @@ const Home = () => {
         flexDirection="row"
         alignItems="center">
         <View zIndex={1}>
-          <DataCard name="millage" value="14km/l" />
+          <DataCard name="millage" suffix="km/l" />
         </View>
         <View marginLeft={-10}>
-          <DataCard type="secondary" value="7.6₹/km" />
+          <DataCard type="secondary" suffix="₹/km" />
         </View>
+        {transactions.length < 2 && (
+          <View
+            zIndex={2}
+            width={width + 20}
+            px={40}
+            position="absolute"
+            left="-10px"
+            bottom="40px"
+            style={{transform: [{rotate: '-5deg'}]}}
+            bg="textSecondary"
+            py="8px">
+            <Text color="white" fontSize="p1" textAlign="center">
+              This data will be available once we have enough transaction data
+            </Text>
+          </View>
+        )}
       </View>
 
       <View flex={1} marginTop={-48}>
