@@ -6,10 +6,11 @@ import FloatingActionButton from 'components/FloatingActionButton';
 import {TransactionType} from 'components/Transaction';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import {DataCardType} from './Home';
 
 type FormData = {
   key?: string;
-  currentKm?: string;
+  odometerReading?: string;
   amount?: string;
   quantity?: string;
   unitPrice?: string;
@@ -18,6 +19,13 @@ type FormData = {
 
 export default function Transaction({navigation, route}) {
   const [formData, setFormData] = useState<FormData>();
+  const [transaction, setTransaction] = useState<TransactionType>();
+  const [dataCard, setDataCard] = useState<DataCardType>({
+    odometerFirstReading: Infinity,
+    odometerLastReading: -Infinity,
+    totalAmount: 0,
+    totalQuantity: 0,
+  });
   const transactionCollection = firestore()
     .collection('users')
     .doc(auth().currentUser?.uid)
@@ -47,53 +55,118 @@ export default function Transaction({navigation, route}) {
   };
 
   useEffect(() => {
-    const transaction = route.params.transaction as TransactionType;
-    if (transaction) {
+    const transactionData = route.params.transaction as TransactionType;
+    setTransaction(transactionData);
+    if (transactionData) {
       setFormData({
-        currentKm: transaction.currentKm.toString(),
-        unitPrice: transaction.unitPrice.toString(),
-        quantity: transaction.quantity.toString(),
-        amount: transaction.amount.toString(),
-        createdAt: transaction.createdAt.toString(),
-        key: transaction.key,
+        odometerReading: transactionData.odometerReading.toString(),
+        unitPrice: transactionData.unitPrice.toString(),
+        quantity: transactionData.quantity.toString(),
+        amount: transactionData.amount.toString(),
+        createdAt: transactionData.createdAt.toString(),
+        key: transactionData.key,
       });
     } else {
       setFormData({createdAt: new Date().toDateString()});
     }
   }, [route]);
 
+  useEffect(() => {
+    const user = auth().currentUser;
+    const subscriber = firestore()
+      .collection('users')
+      .doc(user?.uid)
+      .onSnapshot(snapshot => {
+        const data = snapshot.data();
+        setDataCard(dc => data?.dataCard || dc);
+      });
+    return subscriber;
+  }, []);
+
+  const updateDataCard = (newData: DataCardType) => {
+    const user = auth().currentUser;
+    firestore().collection('users').doc(user?.uid).update({dataCard: newData});
+  };
+
   const saveTransaction = () => {
     if (
-      formData?.currentKm &&
+      formData?.odometerReading &&
       formData.amount &&
       formData.createdAt &&
       formData.quantity &&
       formData.unitPrice
     ) {
       const data = {
-        currentKm: Number(formData.currentKm),
+        odometerReading: Number(formData.odometerReading),
         unitPrice: Number(formData.unitPrice),
         amount: Number(formData.amount),
         quantity: Number(formData.quantity),
         createdAt: new Date(formData.createdAt),
       };
+
+      const newDataCard: DataCardType = {
+        ...dataCard,
+      };
+
+      newDataCard.odometerFirstReading =
+        Number(formData.odometerReading) < dataCard.odometerFirstReading
+          ? Number(formData.odometerReading)
+          : dataCard.odometerFirstReading;
+      newDataCard.odometerLastReading =
+        Number(formData.odometerReading) > dataCard.odometerLastReading
+          ? Number(formData.odometerReading)
+          : dataCard.odometerLastReading;
+
       if (formData.key) {
+        newDataCard.totalQuantity +=
+          Number(formData.quantity) - (transaction?.quantity ?? 0);
+        newDataCard.totalAmount +=
+          Number(formData.amount) - (transaction?.amount ?? 0);
+
         transactionCollection
           .doc(formData.key)
           .set(data)
           .then(() => navigation.goBack());
       } else {
+        newDataCard.totalQuantity += Number(formData.quantity);
+        newDataCard.totalAmount += Number(formData.amount);
+
         transactionCollection.add(data).then(() => navigation.goBack());
       }
+
+      updateDataCard(newDataCard);
     }
   };
 
   const deleteTransaction = () => {
     if (formData?.key) {
+      const newDataCard: DataCardType = {
+        ...dataCard,
+      };
+
+      if (
+        transaction?.odometerReading &&
+        transaction.amount &&
+        transaction.quantity
+      ) {
+        newDataCard.odometerFirstReading =
+          transaction.odometerReading < dataCard.odometerFirstReading
+            ? transaction.odometerReading
+            : dataCard.odometerFirstReading;
+        newDataCard.odometerLastReading =
+          transaction.odometerReading > dataCard.odometerLastReading
+            ? transaction.odometerReading
+            : dataCard.odometerLastReading;
+        newDataCard.totalAmount -= transaction.amount;
+        newDataCard.totalQuantity -= transaction.quantity;
+      }
+
       transactionCollection
         .doc(formData.key)
         .delete()
         .then(() => navigation.goBack());
+
+      updateDataCard(newDataCard);
     }
   };
 
@@ -114,10 +187,10 @@ export default function Transaction({navigation, route}) {
       <View px={24} pt={32} gap={20}>
         <Input
           label="odometer (km)"
-          value={formData?.currentKm}
+          value={formData?.odometerReading}
           inputMode="decimal"
           keyboardType="decimal-pad"
-          onChangeText={value => updateFromData({currentKm: value})}
+          onChangeText={value => updateFromData({odometerReading: value})}
         />
         <Input
           label="unit price (₹)"
