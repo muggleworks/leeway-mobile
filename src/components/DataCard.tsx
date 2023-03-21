@@ -5,11 +5,17 @@ import {useWindowDimensions} from 'react-native';
 
 interface Props {
   type?: 'primary' | 'secondary';
-  value: string;
+  value?: number;
+  suffix?: string;
   name?: string;
 }
 
-export default function DataCard({type = 'primary', value, name}: Props) {
+export default function DataCard({
+  type = 'primary',
+  value,
+  name,
+  suffix,
+}: Props) {
   const theme = useTheme();
   const {width} = useWindowDimensions();
 
@@ -41,7 +47,8 @@ export default function DataCard({type = 'primary', value, name}: Props) {
           color={isPrimary ? 'white' : 'primary'}
           fontSize={isPrimary ? 'xl' : 'h1'}
           fontWeight={isPrimary ? 'bold' : 'normal'}>
-          {value}
+          {value ? Math.round(value * 10) / 10 : '-'}
+          {suffix}
         </Text>
       </View>
     </LinearGradient>

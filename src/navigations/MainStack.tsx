@@ -20,7 +20,6 @@ const MainStack = () => {
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>();
 
   const onAuthStateChanged = (userObject: FirebaseAuthTypes.User | null) => {
-    console.log(userObject);
     setUser(userObject);
   };
 

@@ -15,7 +15,6 @@ export default function TransactionList({
   transactions,
   openTransaction,
 }: Props) {
-  console.log(Platform.OS, transactions);
   return (
     <FlashList
       data={transactions}
