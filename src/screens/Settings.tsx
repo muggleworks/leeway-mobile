@@ -4,6 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import Button from 'components/Button';
 import Header from 'components/Header';
+import KeyValueButton from 'components/KeyValueButton';
 
 export default function Settings() {
   const {goBack} = useNavigation();
@@ -23,7 +24,23 @@ export default function Settings() {
         left={{iconName: 'left', actionHandler: goBack}}
       />
       <View flex={1} px="24px" py="32px">
-        <View flex={1}></View>
+        <View flex={1} gap={16}>
+          <KeyValueButton
+            label="distance unit"
+            value="kilo meter(km)"
+            onPress={() => console.log('Key value button')}
+          />
+          <KeyValueButton
+            label="quantity unit"
+            value="litre(l)"
+            onPress={() => console.log('Key value button')}
+          />
+          <KeyValueButton
+            label="currency"
+            value="INR(₹)"
+            onPress={() => console.log('Key value button')}
+          />
+        </View>
         <View alignItems="center">
           <Button label="sign out" onPress={signOut} />
         </View>
