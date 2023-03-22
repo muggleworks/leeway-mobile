@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, View} from 'react-native-styled';
+import {SafeAreaView, Text, TouchableOpacity, View} from 'react-native-styled';
 import {useNavigation} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import Button from 'components/Button';
@@ -40,6 +40,13 @@ export default function Settings() {
             value="INR(₹)"
             onPress={() => console.log('Key value button')}
           />
+        </View>
+        <View alignItems="center" my="24px">
+          <TouchableOpacity>
+            <Text color="textSecondary" fontSize="p2">
+              terms & conditions
+            </Text>
+          </TouchableOpacity>
         </View>
         <View alignItems="center">
           <Button label="sign out" onPress={signOut} />
