@@ -172,7 +172,7 @@ export default function Transaction({navigation, route}) {
   };
 
   return (
-    <SafeAreaView flex={1} position="relative">
+    <SafeAreaView flex={1} position="relative" bg="white">
       <Header
         title="fuel expense"
         left={{
