@@ -4,6 +4,7 @@ import Svg, {Defs, LinearGradient, Stop, Text} from 'react-native-svg';
 import IconButton from './IconButton';
 import {useTheme} from 'styled-components/native';
 import {IconName} from 'assets/icons';
+import {StatusBar} from 'react-native';
 
 function GradientText({text}: {text: string}) {
   return (
@@ -41,6 +42,7 @@ export default function Header({title, right, left}: Props) {
       marginTop={16}
       flexDirection="row"
       alignItems="center">
+      <StatusBar backgroundColor={theme.colors.white} barStyle="dark-content" />
       {left && (
         <View mr={12}>
           <IconButton
