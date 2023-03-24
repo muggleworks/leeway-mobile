@@ -56,8 +56,8 @@ const Home = () => {
       .collection('users')
       .doc(user?.uid)
       .collection('transactions')
-      .limit(100)
       .orderBy('createdAt', 'desc')
+      .limit(100)
       .onSnapshot(querySnapshot => {
         const transactionList: TransactionType[] = [];
         querySnapshot.forEach(documentSnapshot => {
@@ -75,12 +75,56 @@ const Home = () => {
 
   useEffect(() => {
     const user = auth().currentUser;
+    const transactionCollection = firestore()
+      .collection('users')
+      .doc(user?.uid)
+      .collection('transactions');
+    const subscriber = transactionCollection
+      .orderBy('odometerReading', 'desc')
+      .limit(1)
+      .onSnapshot(querySnapshot => {
+        if (querySnapshot.docs.length === 0) {
+          return;
+        }
+        const lastTransaction = querySnapshot.docs[0].data();
+        setDataCard(dc => ({
+          ...dc,
+          odometerLastReading: lastTransaction.odometerReading,
+        }));
+      });
+    return subscriber;
+  }, []);
+
+  useEffect(() => {
+    const user = auth().currentUser;
+    const transactionCollection = firestore()
+      .collection('users')
+      .doc(user?.uid)
+      .collection('transactions');
+    const subscriber = transactionCollection
+      .orderBy('odometerReading', 'asc')
+      .limit(1)
+      .onSnapshot(querySnapshot => {
+        if (querySnapshot.docs.length === 0) {
+          return;
+        }
+        const firstTransaction = querySnapshot.docs[0].data();
+        setDataCard(dc => ({
+          ...dc,
+          odometerFirstReading: firstTransaction.odometerReading,
+        }));
+      });
+    return subscriber;
+  }, []);
+
+  useEffect(() => {
+    const user = auth().currentUser;
     const subscriber = firestore()
       .collection('users')
       .doc(user?.uid)
       .onSnapshot(snapshot => {
         const data = snapshot.data();
-        setDataCard(dc => data?.dataCard || dc);
+        setDataCard(dc => ({...dc, ...data?.dataCard}));
       });
     return subscriber;
   }, []);

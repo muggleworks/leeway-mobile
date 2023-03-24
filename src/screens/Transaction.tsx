@@ -6,7 +6,6 @@ import FloatingActionButton from 'components/FloatingActionButton';
 import {TransactionType} from 'components/Transaction';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
-import {DataCardType} from './Home';
 import {ScrollView} from 'react-native';
 
 type FormData = {
@@ -18,12 +17,15 @@ type FormData = {
   createdAt?: string;
 };
 
+type DataCardInfo = {
+  totalAmount: number;
+  totalQuantity: number;
+};
+
 export default function Transaction({navigation, route}) {
   const [formData, setFormData] = useState<FormData>();
   const [transaction, setTransaction] = useState<TransactionType>();
-  const [dataCard, setDataCard] = useState<DataCardType>({
-    odometerFirstReading: Infinity,
-    odometerLastReading: -Infinity,
+  const [dataCard, setDataCard] = useState<DataCardInfo>({
     totalAmount: 0,
     totalQuantity: 0,
   });
@@ -84,7 +86,7 @@ export default function Transaction({navigation, route}) {
     return subscriber;
   }, []);
 
-  const updateDataCard = (newData: DataCardType) => {
+  const updateDataCard = (newData: DataCardInfo) => {
     const user = auth().currentUser;
     firestore().collection('users').doc(user?.uid).update({dataCard: newData});
   };
@@ -105,18 +107,9 @@ export default function Transaction({navigation, route}) {
         createdAt: new Date(formData.createdAt),
       };
 
-      const newDataCard: DataCardType = {
+      const newDataCard: DataCardInfo = {
         ...dataCard,
       };
-
-      newDataCard.odometerFirstReading =
-        Number(formData.odometerReading) < dataCard.odometerFirstReading
-          ? Number(formData.odometerReading)
-          : dataCard.odometerFirstReading;
-      newDataCard.odometerLastReading =
-        Number(formData.odometerReading) > dataCard.odometerLastReading
-          ? Number(formData.odometerReading)
-          : dataCard.odometerLastReading;
 
       if (formData.key) {
         newDataCard.totalQuantity +=
@@ -141,7 +134,7 @@ export default function Transaction({navigation, route}) {
 
   const deleteTransaction = () => {
     if (formData?.key) {
-      const newDataCard: DataCardType = {
+      const newDataCard: DataCardInfo = {
         ...dataCard,
       };
 
@@ -150,14 +143,6 @@ export default function Transaction({navigation, route}) {
         transaction.amount &&
         transaction.quantity
       ) {
-        newDataCard.odometerFirstReading =
-          transaction.odometerReading < dataCard.odometerFirstReading
-            ? transaction.odometerReading
-            : dataCard.odometerFirstReading;
-        newDataCard.odometerLastReading =
-          transaction.odometerReading > dataCard.odometerLastReading
-            ? transaction.odometerReading
-            : dataCard.odometerLastReading;
         newDataCard.totalAmount -= transaction.amount;
         newDataCard.totalQuantity -= transaction.quantity;
       }
