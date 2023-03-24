@@ -6,7 +6,7 @@ import FloatingActionButton from 'components/FloatingActionButton';
 import {TransactionType} from 'components/Transaction';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
-import {ScrollView} from 'react-native';
+import {Alert, ScrollView} from 'react-native';
 
 type FormData = {
   key?: string;
@@ -156,6 +156,22 @@ export default function Transaction({navigation, route}) {
     }
   };
 
+  const handleDelete = () => {
+    if (formData?.key) {
+      Alert.alert(
+        'Delete Transaction',
+        'Are you sure you want to delete this transaction?',
+        [
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+          {text: 'Delete', style: 'destructive', onPress: deleteTransaction},
+        ],
+      );
+    }
+  };
+
   return (
     <SafeAreaView flex={1} position="relative" bg="white">
       <Header
@@ -166,7 +182,7 @@ export default function Transaction({navigation, route}) {
         }}
         right={
           formData?.key
-            ? {iconName: 'trash', actionHandler: deleteTransaction}
+            ? {iconName: 'trash', actionHandler: handleDelete}
             : undefined
         }
       />
