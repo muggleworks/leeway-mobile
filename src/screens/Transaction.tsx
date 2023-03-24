@@ -7,6 +7,7 @@ import {TransactionType} from 'components/Transaction';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import {DataCardType} from './Home';
+import {ScrollView} from 'react-native';
 
 type FormData = {
   key?: string;
@@ -184,37 +185,39 @@ export default function Transaction({navigation, route}) {
             : undefined
         }
       />
-      <View px={24} pt={32} gap={20}>
-        <Input
-          label="odometer (km)"
-          value={formData?.odometerReading}
-          inputMode="decimal"
-          keyboardType="decimal-pad"
-          onChangeText={value => updateFromData({odometerReading: value})}
-        />
-        <Input
-          label="unit price (₹)"
-          inputMode="decimal"
-          value={formData?.unitPrice}
-          keyboardType="decimal-pad"
-          onChangeText={value => updateFromData({unitPrice: value})}
-        />
-        <Input
-          label="purchase amount (₹)"
-          inputMode="decimal"
-          value={formData?.amount}
-          keyboardType="decimal-pad"
-          onChangeText={value => updateFromData({amount: value})}
-        />
-        <Input
-          label="quantity (l)"
-          inputMode="decimal"
-          keyboardType="decimal-pad"
-          value={formData?.quantity}
-          onChangeText={value => updateFromData({quantity: value})}
-        />
-        <Input label="date" disabled value={formData?.createdAt} />
-      </View>
+      <ScrollView>
+        <View px={24} py={32} gap={20}>
+          <Input
+            label="odometer (km)"
+            value={formData?.odometerReading}
+            inputMode="decimal"
+            keyboardType="decimal-pad"
+            onChangeText={value => updateFromData({odometerReading: value})}
+          />
+          <Input
+            label="unit price (₹)"
+            inputMode="decimal"
+            value={formData?.unitPrice}
+            keyboardType="decimal-pad"
+            onChangeText={value => updateFromData({unitPrice: value})}
+          />
+          <Input
+            label="purchase amount (₹)"
+            inputMode="decimal"
+            value={formData?.amount}
+            keyboardType="decimal-pad"
+            onChangeText={value => updateFromData({amount: value})}
+          />
+          <Input
+            label="quantity (l)"
+            inputMode="decimal"
+            keyboardType="decimal-pad"
+            value={formData?.quantity}
+            onChangeText={value => updateFromData({quantity: value})}
+          />
+          <Input label="date" disabled value={formData?.createdAt} />
+        </View>
+      </ScrollView>
 
       <View
         position="absolute"
