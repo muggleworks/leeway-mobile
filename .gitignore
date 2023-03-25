@@ -64,3 +64,7 @@ yarn-error.log
 
 # ENV
 config.json
+
+# Android Builds
+app-release.aab
+app-debug.aab
