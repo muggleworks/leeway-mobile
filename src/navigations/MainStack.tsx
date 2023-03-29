@@ -8,10 +8,10 @@ import {screens} from 'screens/index';
 
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import config from 'config.json';
 
 GoogleSignin.configure({
-  webClientId: config.webClientId,
+  webClientId:
+    '359484043976-ekrk6ilo0t6n705imicp0cn64v20pjsm.apps.googleusercontent.com',
 });
 
 const Stack = createNativeStackNavigator();
