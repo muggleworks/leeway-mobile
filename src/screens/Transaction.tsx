@@ -17,18 +17,9 @@ type FormData = {
   createdAt?: string;
 };
 
-type DataCardInfo = {
-  totalAmount: number;
-  totalQuantity: number;
-};
-
 export default function Transaction({navigation, route}) {
   const [formData, setFormData] = useState<FormData>();
   const [transaction, setTransaction] = useState<TransactionType>();
-  const [dataCard, setDataCard] = useState<DataCardInfo>({
-    totalAmount: 0,
-    totalQuantity: 0,
-  });
   const transactionCollection = firestore()
     .collection('users')
     .doc(auth().currentUser?.uid)
@@ -74,24 +65,43 @@ export default function Transaction({navigation, route}) {
     }
   }, [route]);
 
-  useEffect(() => {
+  const saveTransaction = (data: TransactionType) => {
     const user = auth().currentUser;
-    const subscriber = firestore()
-      .collection('users')
-      .doc(user?.uid)
-      .onSnapshot(snapshot => {
-        const data = snapshot.data();
-        setDataCard(dc => data?.dataCard || dc);
-      });
-    return subscriber;
-  }, []);
+    const userDocumentRef = firestore().collection('users').doc(user?.uid);
 
-  const updateDataCard = (newData: DataCardInfo) => {
-    const user = auth().currentUser;
-    firestore().collection('users').doc(user?.uid).update({dataCard: newData});
+    return firestore().runTransaction(async firestoreTransaction => {
+      const userSnapshot = await firestoreTransaction.get(userDocumentRef);
+      const transactionSnapshot = data.key
+        ? await firestoreTransaction.get(transactionCollection.doc(data.key))
+        : null;
+
+      firestoreTransaction.set(userDocumentRef, {
+        dataCard: {
+          totalAmount:
+            (userSnapshot.data()?.dataCard.totalAmount || 0) +
+            data.amount -
+            (transactionSnapshot?.data()?.amount || 0),
+          totalQuantity:
+            (userSnapshot.data()?.dataCard.totalQuantity || 0) +
+            data.quantity -
+            (transactionSnapshot?.data()?.totalQuantity || 0),
+        },
+      });
+
+      firestoreTransaction.set(
+        transactionCollection.doc(data.key || undefined),
+        {
+          unitPrice: data.unitPrice,
+          odometerReading: data.odometerReading,
+          amount: data.amount,
+          quantity: data.quantity,
+          createdAt: data.createdAt,
+        },
+      );
+    });
   };
 
-  const saveTransaction = () => {
+  const handleSave = () => {
     if (
       formData?.odometerReading &&
       formData.amount &&
@@ -99,7 +109,8 @@ export default function Transaction({navigation, route}) {
       formData.quantity &&
       formData.unitPrice
     ) {
-      const data = {
+      const data: TransactionType = {
+        key: formData.key || '',
         odometerReading: Number(formData.odometerReading),
         unitPrice: Number(formData.unitPrice),
         amount: Number(formData.amount),
@@ -107,52 +118,41 @@ export default function Transaction({navigation, route}) {
         createdAt: new Date(formData.createdAt),
       };
 
-      const newDataCard: DataCardInfo = {
-        ...dataCard,
-      };
+      console.log(data);
 
-      if (formData.key) {
-        newDataCard.totalQuantity +=
-          Number(formData.quantity) - (transaction?.quantity ?? 0);
-        newDataCard.totalAmount +=
-          Number(formData.amount) - (transaction?.amount ?? 0);
-
-        transactionCollection
-          .doc(formData.key)
-          .set(data)
-          .then(() => navigation.goBack());
-      } else {
-        newDataCard.totalQuantity += Number(formData.quantity);
-        newDataCard.totalAmount += Number(formData.amount);
-
-        transactionCollection.add(data).then(() => navigation.goBack());
-      }
-
-      updateDataCard(newDataCard);
+      saveTransaction(data)
+        .then(navigation.goBack)
+        .catch(error => console.log(error));
     }
   };
 
   const deleteTransaction = () => {
-    if (formData?.key) {
-      const newDataCard: DataCardInfo = {
-        ...dataCard,
-      };
+    const user = auth().currentUser;
+    const userDocumentRef = firestore().collection('users').doc(user?.uid);
+    return firestore().runTransaction(async firestoreTransaction => {
+      const userSnapshot = await firestoreTransaction.get(userDocumentRef);
 
-      if (
-        transaction?.odometerReading &&
-        transaction.amount &&
-        transaction.quantity
-      ) {
-        newDataCard.totalAmount -= transaction.amount;
-        newDataCard.totalQuantity -= transaction.quantity;
+      if (userSnapshot.exists && transaction) {
+        firestoreTransaction.update(userDocumentRef, {
+          dataCard: {
+            totalAmount:
+              userSnapshot.data()!.dataCard.totalAmount - transaction.amount,
+            totalQuantity:
+              userSnapshot.data()!.dataCard.totalQuantity -
+              transaction.quantity,
+          },
+        });
+
+        firestoreTransaction.delete(transactionCollection.doc(formData?.key));
       }
+    });
+  };
 
-      transactionCollection
-        .doc(formData.key)
-        .delete()
-        .then(() => navigation.goBack());
-
-      updateDataCard(newDataCard);
+  const deleteFunction = () => {
+    if (formData?.key) {
+      deleteTransaction()
+        .then(navigation.goBack)
+        .catch(error => console.log(error));
     }
   };
 
@@ -166,7 +166,7 @@ export default function Transaction({navigation, route}) {
             text: 'Cancel',
             style: 'cancel',
           },
-          {text: 'Delete', style: 'destructive', onPress: deleteTransaction},
+          {text: 'Delete', style: 'destructive', onPress: deleteFunction},
         ],
       );
     }
@@ -226,7 +226,7 @@ export default function Transaction({navigation, route}) {
         left="50%"
         style={{transform: [{translateX: -28}]}}
         alignItems="center">
-        <FloatingActionButton onPress={saveTransaction} icon="check" />
+        <FloatingActionButton onPress={handleSave} icon="check" />
       </View>
     </SafeAreaView>
   );
