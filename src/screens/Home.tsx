@@ -56,7 +56,7 @@ const Home = () => {
       .collection('users')
       .doc(user?.uid)
       .collection('transactions')
-      .orderBy('createdAt', 'desc')
+      .orderBy('odometerReading', 'desc')
       .limit(100)
       .onSnapshot(querySnapshot => {
         const transactionList: TransactionType[] = [];
