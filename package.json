@@ -14,6 +14,7 @@
     "detox:ios:release": "detox build -c ios.sim.release && detox test -R 1 -c ios.sim.release"
   },
   "dependencies": {
+    "@invertase/react-native-apple-authentication": "^2.2.2",
     "@react-native-firebase/app": "^17.3.2",
     "@react-native-firebase/auth": "^17.3.2",
     "@react-native-firebase/firestore": "^17.3.2",
