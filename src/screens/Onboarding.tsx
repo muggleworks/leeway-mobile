@@ -4,9 +4,12 @@ import {View, Text, SafeAreaView} from 'react-native-styled';
 import AuthButton from 'components/AuthButton';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {appleAuth} from '@invertase/react-native-apple-authentication';
+import {Platform} from 'react-native';
 
 const Onboarding = () => {
   const [loading, setLoading] = React.useState({google: false, apple: false});
+
   const handleGoogleAuth = async () => {
     try {
       setLoading({...loading, google: true});
@@ -21,10 +24,25 @@ const Onboarding = () => {
     }
   };
 
-  const handleAppleAuth = () => {
+  const handleAppleAuth = async () => {
     try {
       setLoading({...loading, apple: true});
-      console.log('Apple Auth');
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+      });
+
+      if (!appleAuthRequestResponse.identityToken) {
+        throw new Error('Apple Sign-In failed - no identify token returned');
+      }
+
+      const {identityToken, nonce} = appleAuthRequestResponse;
+      const appleCredential = auth.AppleAuthProvider.credential(
+        identityToken,
+        nonce,
+      );
+
+      return auth().signInWithCredential(appleCredential);
     } catch (error) {
       console.log('Not signed in!', error);
     } finally {
@@ -45,11 +63,13 @@ const Onboarding = () => {
             continue with
           </Text>
           <View flexDirection="row" gap={28} marginTop={16}>
-            <AuthButton
-              provider="apple"
-              onPress={handleAppleAuth}
-              loading={loading.apple}
-            />
+            {Platform.OS === 'ios' && (
+              <AuthButton
+                provider="apple"
+                onPress={handleAppleAuth}
+                loading={loading.apple}
+              />
+            )}
             <AuthButton
               provider="google"
               onPress={handleGoogleAuth}
