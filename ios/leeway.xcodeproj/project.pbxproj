@@ -13,6 +13,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		448EE2F9DCEC4A549FE3A653 /* Rubik-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 511288C9CBFD441C99760979 /* Rubik-Bold.ttf */; };
+		5423D05F29DDEEEA00228536 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5423D05E29DDEEE900228536 /* BootSplash.storyboard */; };
 		54A6F9DC29C1CCE60079E8B8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 54A6F9DB29C1CCE60079E8B8 /* GoogleService-Info.plist */; };
 		55664020D8EA9EE1B2FAB56A /* Pods_leeway.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A3C1F1159BC2078D72186C5 /* Pods_leeway.framework */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -44,6 +45,7 @@
 		1A60DEA00690EC1E52146608 /* Pods_leeway_leewayTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_leeway_leewayTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B4392A12AC88292D35C810B /* Pods-leeway.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-leeway.debug.xcconfig"; path = "Target Support Files/Pods-leeway/Pods-leeway.debug.xcconfig"; sourceTree = "<group>"; };
 		511288C9CBFD441C99760979 /* Rubik-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Bold.ttf"; path = "../src/assets/fonts/Rubik-Bold.ttf"; sourceTree = "<group>"; };
+		5423D05E29DDEEE900228536 /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = leeway/BootSplash.storyboard; sourceTree = "<group>"; };
 		54A6F9DB29C1CCE60079E8B8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		54B4567D29DB7EB200057B9F /* leeway.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = leeway.entitlements; path = leeway/leeway.entitlements; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-leeway.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-leeway.release.xcconfig"; path = "Target Support Files/Pods-leeway/Pods-leeway.release.xcconfig"; sourceTree = "<group>"; };
@@ -95,6 +97,7 @@
 		13B07FAE1A68108700A75B9A /* leeway */ = {
 			isa = PBXGroup;
 			children = (
+				5423D05E29DDEEE900228536 /* BootSplash.storyboard */,
 				54B4567D29DB7EB200057B9F /* leeway.entitlements */,
 				54A6F9DB29C1CCE60079E8B8 /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -271,6 +274,7 @@
 				0240781193CC4DEB9D1C2998 /* Rubik-Medium.ttf in Resources */,
 				B863762F6E7A43C18DE22CD9 /* Rubik-Regular.ttf in Resources */,
 				54A6F9DC29C1CCE60079E8B8 /* GoogleService-Info.plist in Resources */,
+				5423D05F29DDEEEA00228536 /* BootSplash.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

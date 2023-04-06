@@ -57,7 +57,7 @@ const Onboarding = () => {
         justifyContent="center"
         flex={1}
         position="relative">
-        <OnboardingLogo />
+        <OnboardingLogo width={220} />
         <View position="absolute" bottom={60} alignItems="center">
           <Text color="text" fontSize="p1">
             continue with

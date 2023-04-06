@@ -1088,6 +1088,8 @@ PODS:
     - React-perflogger (= 0.71.4)
   - RNAppleAuthentication (2.2.2):
     - React-Core
+  - RNBootSplash (4.5.3):
+    - React-Core
   - RNFBApp (17.3.2):
     - Firebase/CoreOnly (= 10.6.0)
     - React-Core
@@ -1151,6 +1153,7 @@ DEPENDENCIES:
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNAppleAuthentication (from `../node_modules/@invertase/react-native-apple-authentication`)"
+  - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
   - "RNFBFirestore (from `../node_modules/@react-native-firebase/firestore`)"
@@ -1256,6 +1259,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNAppleAuthentication:
     :path: "../node_modules/@invertase/react-native-apple-authentication"
+  RNBootSplash:
+    :path: "../node_modules/react-native-bootsplash"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBAuth:
@@ -1330,6 +1335,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 8fa50b38df6b992c76537993a2b0553d3b088004
   ReactCommon: 34f9369c376d5f335069dda29552b3e7351b9ec6
   RNAppleAuthentication: 0571c08da8c327ae2afc0261b48b4a515b0286a6
+  RNBootSplash: 8fb33325dc3620a01984c6660c42cbd93fadcc80
   RNFBApp: dd22a306a31189e99126a35962498c83b06520ab
   RNFBAuth: c0dbc7680a3181e460fdc2b4ba80851363c6946d
   RNFBFirestore: 8530d924a54b8e52dd89d0335bb161c41d36a252
