@@ -5,11 +5,13 @@ import AuthButton from 'components/AuthButton';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {appleAuth} from '@invertase/react-native-apple-authentication';
-import {Linking, Platform} from 'react-native';
+import {Linking, Platform, StatusBar} from 'react-native';
 import UnderlineText from 'components/UnderlineText';
+import {useTheme} from 'styled-components/native';
 
 const Onboarding = () => {
   const [loading, setLoading] = React.useState({google: false, apple: false});
+  const theme = useTheme();
 
   const handleGoogleAuth = async () => {
     try {
@@ -62,6 +64,10 @@ const Onboarding = () => {
         justifyContent="center"
         flex={1}
         position="relative">
+        <StatusBar
+          backgroundColor={theme.colors.white}
+          barStyle="dark-content"
+        />
         <OnboardingLogo width={220} />
         <View position="absolute" bottom={60} alignItems="center">
           <Text color="text" fontSize="p1">
