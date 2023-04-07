@@ -5,6 +5,7 @@ import auth from '@react-native-firebase/auth';
 import Button from 'components/Button';
 import Header from 'components/Header';
 import KeyValueButton from 'components/KeyValueButton';
+import {Linking} from 'react-native';
 
 export default function Settings() {
   const {goBack} = useNavigation();
@@ -15,6 +16,10 @@ export default function Settings() {
     } catch (error) {
       console.log('Failed to sign out', error);
     }
+  };
+
+  const openTermsAndConditions = () => {
+    Linking.openURL('https://leeway.zympl.com/terms-and-conditions');
   };
 
   return (
@@ -42,7 +47,7 @@ export default function Settings() {
           />
         </View>
         <View alignItems="center" my="24px">
-          <TouchableOpacity>
+          <TouchableOpacity onPress={openTermsAndConditions}>
             <Text color="textSecondary" fontSize="p2">
               terms & conditions
             </Text>

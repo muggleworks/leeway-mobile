@@ -1,11 +1,12 @@
 import React from 'react';
 import OnboardingLogo from 'assets/images/onboarding-logo.svg';
-import {View, Text, SafeAreaView} from 'react-native-styled';
+import {View, Text, SafeAreaView, TouchableOpacity} from 'react-native-styled';
 import AuthButton from 'components/AuthButton';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {appleAuth} from '@invertase/react-native-apple-authentication';
-import {Platform} from 'react-native';
+import {Linking, Platform} from 'react-native';
+import UnderlineText from 'components/UnderlineText';
 
 const Onboarding = () => {
   const [loading, setLoading] = React.useState({google: false, apple: false});
@@ -50,6 +51,10 @@ const Onboarding = () => {
     }
   };
 
+  const openTermsAndConditions = () => {
+    Linking.openURL('https://leeway.zympl.com/terms-and-conditions');
+  };
+
   return (
     <SafeAreaView flex={1} bg="white">
       <View
@@ -75,6 +80,16 @@ const Onboarding = () => {
               onPress={handleGoogleAuth}
               loading={loading.google}
             />
+          </View>
+          <View flexDirection="row" marginTop="28px">
+            <Text fontSize="p2" color="textSecondary">
+              by continuing, you agree to our{' '}
+            </Text>
+            <TouchableOpacity onPress={openTermsAndConditions}>
+              <UnderlineText fontSize="p2" color="text">
+                terms & conditions
+              </UnderlineText>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
