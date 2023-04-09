@@ -5,6 +5,7 @@ const theme: DefaultTheme = {
     h1: 24,
     h2: 20,
     h3: 18,
+    h4: 16,
     p1: 14,
     p2: 12,
   },
