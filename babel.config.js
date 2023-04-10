@@ -10,6 +10,7 @@ module.exports = {
           assets: './src/assets',
           navigation: './src/navigation',
           screens: './src/screens',
+          constants: './src/constants',
           'react-native-styled': './src/styled',
         },
       },
