@@ -23,6 +23,8 @@ const Home = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const [transactions, setTransactions] = useState<TransactionType[]>([]);
+  const [_1_Transaction, set_1_Transaction] = useState<TransactionType>(); // first transaction
+  const [_N_Transaction, set_N_Transaction] = useState<TransactionType>(); // last transaction
   const [dataCard, setDataCard] = useState<DataCardType>({
     odometerFirstReading: 0,
     odometerLastReading: 0,
@@ -86,7 +88,8 @@ const Home = () => {
         if (querySnapshot.docs.length === 0) {
           return;
         }
-        const lastTransaction = querySnapshot.docs[0].data();
+        const lastTransaction = querySnapshot.docs[0].data() as TransactionType;
+        set_N_Transaction(lastTransaction);
         setDataCard(dc => ({
           ...dc,
           odometerLastReading: lastTransaction.odometerReading,
@@ -108,7 +111,9 @@ const Home = () => {
         if (querySnapshot.docs.length === 0) {
           return;
         }
-        const firstTransaction = querySnapshot.docs[0].data();
+        const firstTransaction =
+          querySnapshot.docs[0].data() as TransactionType;
+        set_1_Transaction(firstTransaction);
         setDataCard(dc => ({
           ...dc,
           odometerFirstReading: firstTransaction.odometerReading,
@@ -129,23 +134,25 @@ const Home = () => {
     return subscriber;
   }, []);
 
-  const getKmpl = () => {
+  const getMileage = () => {
     if (transactions.length < 2) {
       return;
     }
+    const netQuantity =
+      dataCard.totalQuantity - (_N_Transaction?.quantity || 0);
     return (
       (dataCard.odometerLastReading - dataCard.odometerFirstReading) /
-      dataCard.totalQuantity
+      netQuantity
     );
   };
 
-  const getRspkm = () => {
+  const getRunningCost = () => {
     if (transactions.length < 2) {
       return;
     }
+    const netAmount = dataCard.totalAmount - (_N_Transaction?.amount || 0);
     return (
-      dataCard.totalAmount /
-      (dataCard.odometerLastReading - dataCard.odometerFirstReading)
+      netAmount / (dataCard.odometerLastReading - dataCard.odometerFirstReading)
     );
   };
 
@@ -166,10 +173,10 @@ const Home = () => {
         flexDirection="row"
         alignItems="center">
         <View zIndex={1}>
-          <DataCard name="millage" value={getKmpl()} suffix="km/l" />
+          <DataCard name="mileage" value={getMileage()} suffix="km/l" />
         </View>
         <View marginLeft={-10}>
-          <DataCard type="secondary" value={getRspkm()} suffix="₹/km" />
+          <DataCard type="secondary" value={getRunningCost()} suffix="₹/km" />
         </View>
         {transactions.length < 2 && (
           <View
