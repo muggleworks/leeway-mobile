@@ -134,7 +134,7 @@ const Home = () => {
     return subscriber;
   }, []);
 
-  const getKmpl = () => {
+  const getMileage = () => {
     if (transactions.length < 2) {
       return;
     }
@@ -146,13 +146,13 @@ const Home = () => {
     );
   };
 
-  const getRspkm = () => {
+  const getRunningCost = () => {
     if (transactions.length < 2) {
       return;
     }
+    const netAmount = dataCard.totalAmount - (_N_Transaction?.amount || 0);
     return (
-      dataCard.totalAmount /
-      (dataCard.odometerLastReading - dataCard.odometerFirstReading)
+      netAmount / (dataCard.odometerLastReading - dataCard.odometerFirstReading)
     );
   };
 
@@ -173,10 +173,10 @@ const Home = () => {
         flexDirection="row"
         alignItems="center">
         <View zIndex={1}>
-          <DataCard name="mileage" value={getKmpl()} suffix="km/l" />
+          <DataCard name="mileage" value={getMileage()} suffix="km/l" />
         </View>
         <View marginLeft={-10}>
-          <DataCard type="secondary" value={getRspkm()} suffix="₹/km" />
+          <DataCard type="secondary" value={getRunningCost()} suffix="₹/km" />
         </View>
         {transactions.length < 2 && (
           <View
