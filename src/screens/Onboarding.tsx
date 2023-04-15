@@ -54,7 +54,7 @@ const Onboarding = () => {
   };
 
   const openTermsAndConditions = () => {
-    Linking.openURL('https://leeway.zympl.com/terms-and-conditions');
+    Linking.openURL('https://leeway.zympl.xyz/terms-and-conditions.html'); // TODO: Move this to env/constants - Issue: https://github.com/zympl/leeway-mobile/issues/120
   };
 
   return (
