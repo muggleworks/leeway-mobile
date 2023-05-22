@@ -7,6 +7,7 @@ import {TransactionType} from 'components/Transaction';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import {Alert, ScrollView} from 'react-native';
+import {NavigationProp, RouteProp} from '@react-navigation/native';
 
 type FormData = {
   key?: string;
@@ -16,8 +17,11 @@ type FormData = {
   unitPrice?: string;
   createdAt?: string;
 };
-
-export default function Transaction({navigation, route}) {
+type Props = {
+  navigation: NavigationProp<any>;
+  route: RouteProp<any>;
+};
+export default function Transaction({navigation, route}: Props) {
   const [formData, setFormData] = useState<FormData>();
   const [transaction, setTransaction] = useState<TransactionType>();
   const transactionCollection = firestore()
