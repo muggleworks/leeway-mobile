@@ -5,13 +5,12 @@ import DataCard from 'components/DataCard';
 import {TransactionType} from 'components/Transaction';
 import {useTheme} from 'styled-components/native';
 import Header from 'components/Header';
-import {useNavigation} from '@react-navigation/native';
+import {NavigationProp} from '@react-navigation/native';
 import {screens} from 'screens/index';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import TransactionList from 'components/TransactionList';
 import {useWindowDimensions} from 'react-native';
-
 export type DataCardType = {
   odometerFirstReading: number;
   odometerLastReading: number;
@@ -19,9 +18,12 @@ export type DataCardType = {
   totalAmount: number;
 };
 
-const Home = () => {
+type Props = {
+  navigation: NavigationProp<any>;
+};
+
+const Home = ({navigation}: Props) => {
   const theme = useTheme();
-  const navigation = useNavigation();
   const [transactions, setTransactions] = useState<TransactionType[]>([]);
   const [_1_Transaction, set_1_Transaction] = useState<TransactionType>(); // first transaction
   const [_N_Transaction, set_N_Transaction] = useState<TransactionType>(); // last transaction
