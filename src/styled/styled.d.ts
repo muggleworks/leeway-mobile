@@ -8,6 +8,7 @@ declare module 'styled-components/native' {
       h1: number;
       h2: number;
       h3: number;
+      h4: number;
       p1: number;
       p2: number;
     };
@@ -20,6 +21,9 @@ declare module 'styled-components/native' {
       bgActive: string | ColorValue;
       border: string | ColorValue;
       borderActive: string | ColorValue;
+      successColor: string | ColorValue;
+      dangerColor: string | ColorValue;
+      warningColor: string | ColorValue;
     };
     borderWidths: {
       normal: number;

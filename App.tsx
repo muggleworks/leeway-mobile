@@ -16,9 +16,9 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <ToastProvider
         animationType="zoom-in"
-        successColor="#339900"
-        dangerColor="#cc3300"
-        warningColor="#ffcc00"
+        successColor={theme.colors.successColor}
+        dangerColor={theme.colors.dangerColor}
+        warningColor={theme.colors.dangerColor}
         swipeEnabled>
         <SafeAreaProvider>
           <NavigationContainer onReady={hideSplashScreen}>
