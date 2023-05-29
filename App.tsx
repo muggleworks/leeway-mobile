@@ -5,6 +5,7 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import theme from './src/styled/theme';
 import {ThemeProvider} from 'styled-components/native';
 import RNBootSplash from 'react-native-bootsplash';
+import {ToastProvider} from 'react-native-toast-notifications';
 
 const App = () => {
   const hideSplashScreen = () => {
@@ -13,11 +14,18 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <SafeAreaProvider>
-        <NavigationContainer onReady={hideSplashScreen}>
-          <MainStack />
-        </NavigationContainer>
-      </SafeAreaProvider>
+      <ToastProvider
+        animationType="zoom-in"
+        successColor="#339900"
+        dangerColor="#cc3300"
+        warningColor="#ffcc00"
+        swipeEnabled>
+        <SafeAreaProvider>
+          <NavigationContainer onReady={hideSplashScreen}>
+            <MainStack />
+          </NavigationContainer>
+        </SafeAreaProvider>
+      </ToastProvider>
     </ThemeProvider>
   );
 };

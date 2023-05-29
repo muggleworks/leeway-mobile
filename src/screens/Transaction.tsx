@@ -8,6 +8,7 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import {Alert, ScrollView} from 'react-native';
 import {NavigationProp, RouteProp} from '@react-navigation/native';
+import {useToast} from 'react-native-toast-notifications';
 
 type FormData = {
   key?: string;
@@ -22,6 +23,7 @@ type Props = {
   route: RouteProp<any>;
 };
 export default function Transaction({navigation, route}: Props) {
+  const toast = useToast();
   const [formData, setFormData] = useState<FormData>();
   const [transaction, setTransaction] = useState<TransactionType>();
   const transactionCollection = firestore()
@@ -72,7 +74,6 @@ export default function Transaction({navigation, route}: Props) {
   const saveTransaction = (data: TransactionType) => {
     const user = auth().currentUser;
     const userDocumentRef = firestore().collection('users').doc(user?.uid);
-
     return firestore().runTransaction(async firestoreTransaction => {
       const userSnapshot = await firestoreTransaction.get(userDocumentRef);
       const transactionSnapshot = data.key
@@ -102,31 +103,38 @@ export default function Transaction({navigation, route}: Props) {
           createdAt: data.createdAt,
         },
       );
+      toast.show('Saved Successfully!', {
+        type: 'success',
+      });
     });
   };
 
-  const handleSave = () => {
-    if (
-      formData?.odometerReading &&
-      formData.amount &&
-      formData.createdAt &&
-      formData.quantity &&
-      formData.unitPrice
-    ) {
-      const data: TransactionType = {
-        key: formData.key || '',
-        odometerReading: Number(formData.odometerReading),
-        unitPrice: Number(formData.unitPrice),
-        amount: Number(formData.amount),
-        quantity: Number(formData.quantity),
-        createdAt: new Date(formData.createdAt),
-      };
+  const handleSave = async () => {
+    try {
+      if (
+        formData?.odometerReading &&
+        formData.amount &&
+        formData.createdAt &&
+        formData.quantity &&
+        formData.unitPrice
+      ) {
+        const data: TransactionType = {
+          key: formData.key || '',
+          odometerReading: Number(formData.odometerReading),
+          unitPrice: Number(formData.unitPrice),
+          amount: Number(formData.amount),
+          quantity: Number(formData.quantity),
+          createdAt: new Date(formData.createdAt),
+        };
 
-      console.log(data);
+        console.log(data);
 
-      saveTransaction(data)
-        .then(navigation.goBack)
-        .catch(error => console.log(error));
+        await saveTransaction(data);
+        navigation.goBack();
+      }
+    } catch (error) {
+      toast.show('Sorry, your submission has failed!', {type: 'danger'});
+      console.log('Error while submitting expense', error);
     }
   };
 
