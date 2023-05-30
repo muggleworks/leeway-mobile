@@ -11,6 +11,7 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import TransactionList from 'components/TransactionList';
 import {useWindowDimensions} from 'react-native';
+
 export type DataCardType = {
   odometerFirstReading: number;
   odometerLastReading: number;

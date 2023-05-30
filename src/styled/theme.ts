@@ -18,6 +18,9 @@ const theme: DefaultTheme = {
     bgActive: '#EC73634D',
     border: '#EC736399',
     borderActive: '#EA6290',
+    successColor: '#339900',
+    dangerColor: '#cc3300',
+    warningColor: '#ffcc00',
   },
   borderWidths: {
     normal: 1,
