@@ -12,6 +12,7 @@ To get started with Leeway, follow these steps:
 - Start the development server: `yarn start`
 - Open a new terminal window and run the app on Android: `yarn android` (Make sure you have an Android emulator or device connected)
 - Open a new terminal window and run the app on iOS: `yarn ios` (Make sure you have Xcode installed for iOS development)
+
 Note: For detailed instructions on setting up React Native development environment and running the app on different platforms, please refer to the [official React Native documentation](https://reactnative.dev/docs/environment-setup).
 
 ## Running Tests (E2E)
