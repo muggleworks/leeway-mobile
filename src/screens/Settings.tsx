@@ -7,6 +7,7 @@ import Header from 'components/Header';
 import KeyValueButton from 'components/KeyValueButton';
 import {Linking} from 'react-native';
 import SelectSheet, {SelectSheetRef} from 'components/SelectSheet';
+import CURRENCY_LIST from 'constants/currencyList';
 
 export default function Settings() {
   const {goBack} = useNavigation();
@@ -52,12 +53,12 @@ export default function Settings() {
         <View flex={1} px="24px" py="32px">
           <View flex={1} gap={16}>
             <KeyValueButton
-              label="units"
+              label="display units"
               value="metric"
               onPress={openUnitsSheet}
             />
             <KeyValueButton
-              label="currency"
+              label="display currency"
               value="INR(₹)"
               onPress={openCurrencySheet}
             />
@@ -77,15 +78,17 @@ export default function Settings() {
       <SelectSheet
         selectedIndex={0}
         ref={unitsSheetRef}
-        title="units"
+        title="display units"
         options={['metric (kilometer & litre)', 'imperial (mile & gallon)']}
         onPress={onSelectUnit}
       />
       <SelectSheet
         selectedIndex={2}
         ref={currencySheetRef}
-        title="currency"
-        options={['USD($)', 'EUR(€)', 'INR(₹)', 'GBP(£)', 'JPY(¥)']}
+        title="display currency"
+        options={Object.keys(CURRENCY_LIST).map(
+          key => key + `(${CURRENCY_LIST[key].symbol})`,
+        )}
         onPress={onSelectCurrency}
       />
     </>
