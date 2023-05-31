@@ -6,7 +6,7 @@ Leeway is a user-friendly mobile application designed to make managing your vehi
 ## Installation
 To get started with Leeway, follow these steps:
 
-Clone the repository: `git clone [https://github.com/your-username/leeway.git](https://github.com/zympl/leeway-mobile.git)`
+Clone the repository: `git clone https://github.com/zympl/leeway-mobile.git`
 Navigate to the project directory: `cd leeway-mobile`
 Install dependencies: `yarn install`
 Start the development server: `yarn start`
